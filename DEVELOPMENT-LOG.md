@@ -211,8 +211,15 @@ fix is to make it context-aware rather than to relax it.
   set would invalidate the ~10k-token cached prefix on every turn. The stage
   now prefetches results instead, and the tool list stays static.
 - **LangGraph.** An independent design review argued for dropping it as "a
-  `while` loop with extra imports". Kept, narrowly — it owns the retry cycle
-  and the checkpointed thread that makes follow-ups work — but model calls go
-  through the raw Anthropic SDK, not `ChatAnthropic`, and `create_react_agent`
-  was never on the table because it hides the agent loop, which is the thing
-  being evaluated.
+  `while` loop with extra imports". Kept, narrowly — it owns the validator
+  retry cycle — but model calls go through the raw Anthropic SDK, not
+  `ChatAnthropic`, and `create_react_agent` was never on the table because it
+  hides the agent loop, which is the thing being evaluated.
+
+  I also had to correct my own claim about it. I wrote that the checkpointed
+  thread was what made follow-ups work; it was not — conversation memory is
+  an explicit `history` list replayed as plain text. Sharing one checkpoint
+  thread across turns instead made LangGraph carry per-turn channels forward,
+  so turn 2 inherited turn 1's evidence and a `RetrievalHint` came back as a
+  dict and crashed the executor. The checkpoint is now scoped to a single
+  turn, which is the only thing it was ever needed for.

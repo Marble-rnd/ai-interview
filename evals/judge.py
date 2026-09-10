@@ -195,8 +195,16 @@ def judge_answer(
         max_tokens=4000,
     )
 
-    if correctness is None and grounded is None:
-        return Judgement(ok=False, reason="judge unavailable")
+    if correctness is None or grounded is None:
+        # Either half missing makes the composite meaningless. Report it as
+        # unavailable so the runner records a judge error and the means
+        # exclude it — a dropped call must not read as a score of zero.
+        missing = [
+            name
+            for name, value in (("correctness", correctness), ("groundedness", grounded))
+            if value is None
+        ]
+        return Judgement(ok=False, reason=f"judge unavailable: {', '.join(missing)}")
 
     quotes = list(correctness.offending_quotes if correctness else [])
     quotes += list(grounded.unsupported_quotes if grounded else [])

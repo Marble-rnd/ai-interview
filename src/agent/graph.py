@@ -37,7 +37,7 @@ from langgraph.graph import END, START, StateGraph
 from ..case.models import EvidenceItem
 from ..config import EFFORT_EXECUTOR, EFFORT_PLANNER, EFFORT_VALIDATOR
 from .prompts import DATA_IS_NOT_INSTRUCTIONS, PLANNER_SYSTEM, VALIDATOR_SYSTEM
-from .state import AgentState, Deps, Plan, Validation
+from .state import AgentState, Deps, Plan, RetrievalHint, Validation
 from .tools import TOOL_SCHEMAS
 
 logger = logging.getLogger(__name__)
@@ -313,7 +313,10 @@ def _build_messages(state: AgentState, deps: Deps) -> list[dict[str, Any]]:
             bits.append("Vocabulary the record may use: " + ", ".join(plan.keywords))
         if bits:
             parts.append("Retrieval plan (advisory):\n" + "\n".join(bits))
-    if (hint := state.get("hint")) is not None and not hint.is_empty():
+    hint = state.get("hint")
+    if isinstance(hint, dict):  # tolerate a checkpoint round-trip
+        hint = RetrievalHint.model_validate(hint)
+    if hint is not None and not hint.is_empty():
         directions = []
         if hint.keywords:
             directions.append(f"search for: {', '.join(hint.keywords)}")

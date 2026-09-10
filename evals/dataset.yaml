@@ -471,7 +471,12 @@ items:
       attorney is still booked for 2026-10-02 and has not taken place. Earlier
       calls were intake and sales conversations, not attorney advice.
     must_include: ['no|not|has(n.t| not) (yet )?(taken place|happened|occurred)|still (scheduled|booked)']
-    must_not_include: ['the attorney advised', 'she advised', 'he advised']
+    must_not_include:
+      # Must not report the *content* of advice. Requiring an object after the
+      # verb keeps the honest phrasing "there's nothing the attorney advised
+      # on a call" from tripping it — the third time a negation-blind
+      # assertion flagged a correct answer in this suite.
+      - "(attorney|she|he) (advised|recommended|counsell?ed)\\s+(him|her|the client|them|that|to|against)\\b"
     expected_verdict: answered
     gold_events: [E083]
     gold_documents: []

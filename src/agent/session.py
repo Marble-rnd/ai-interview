@@ -1,10 +1,11 @@
 """
 A conversation with the agent about one case.
 
-Holds the loaded artifact, the tool set bound to it, and the LangGraph
-thread. Multi-turn works because the graph is compiled with a checkpointer
-and every turn reuses the same `thread_id`, so follow-ups like "and what
-about the response deadline?" resolve against what was already said.
+Holds the loaded artifact, the tool set bound to it, and the conversation.
+Multi-turn works because each turn is replayed the prior turns as plain
+text, so follow-ups like "and what about the response deadline?" resolve
+against what was already said. The LangGraph checkpointer is scoped to a
+single turn and exists for the validator retry cycle, not for memory.
 
 Every turn writes a JSONL trace — stage timings, tool calls with their
 arguments, tokens in/out/cached, cache hit rate, cost — which is what the
@@ -131,10 +132,17 @@ class CaseSession:
             on_event=on_event,
         )
 
+        # One checkpoint thread per *turn*, not per conversation. The
+        # checkpointer's job here is the within-turn validator retry cycle;
+        # conversation memory is the explicit `history` list below. Sharing
+        # one thread across turns made LangGraph carry per-turn channels
+        # forward, so turn 2 inherited turn 1's evidence (contaminating its
+        # citation pack) and replayed a `RetrievalHint` back as a plain dict.
+        turn_thread = f"{self.thread_id}:{len(self.history) // 2}"
         state = _graph().invoke(
             {"question": question, "history": list(self.history)},
             config={
-                "configurable": {"deps": deps, "thread_id": self.thread_id},
+                "configurable": {"deps": deps, "thread_id": turn_thread},
                 "recursion_limit": 30,
             },
         )

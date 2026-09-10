@@ -17,7 +17,9 @@ uv run python -m src.cli --case case_001        # or the terminal REPL
 Already-generated output, so none of this has to be run to review it:
 [`demo/transcript.md`](demo/transcript.md) ·
 [`evals/results/agent.md`](evals/results/agent.md) ·
-[`evals/results/retrieval.md`](evals/results/retrieval.md)
+[`evals/results/retrieval.md`](evals/results/retrieval.md) ·
+[`DEVELOPMENT-LOG.md`](DEVELOPMENT-LOG.md) — where the direction changed
+during the build, and what the measurements contradicted
 
 ---
 
@@ -177,11 +179,11 @@ thing):
 | Dense (bge-small, local ONNX) | 61% | 22% | 0.625 | 2 |
 | Hybrid RRF (raw BM25 + dense) | 64% | 17% | 0.639 | 1 |
 | **Hybrid RRF (contextual BM25 + dense)** — default | 64% | 22% | 0.703 | 1 |
-| **+ Claude listwise rerank** | **81%** | **38%** | **0.858** | **0** |
+| **+ Claude listwise rerank** | **81%** | **39%** | **0.858** | **0** |
 
 Two findings worth stating plainly:
 
-- **Claude reranking is the component that matters** — +17pts recall, +16pts
+- **Claude reranking is the component that matters** — +17pts recall, +17pts
   precision, +0.16 MRR, and it eliminates total misses entirely. It costs ~2.5s.
 - **Contextual blurbs made BM25 *worse* on its own** (69% → 62%), which is the
   opposite of the published result. The reason is visible in the blurbs: every
@@ -209,8 +211,11 @@ to survive that swap.
 
 ## The agent
 
-LangGraph owns the graph — the validator retry cycle, and the checkpointed
-thread that makes follow-ups work. Model calls go through one thin wrapper over
+LangGraph owns the graph and the validator retry cycle; its checkpointer is
+scoped to a single turn. Conversation memory is an explicit `history` list
+replayed as plain text, which is what makes follow-ups work — sharing one
+checkpoint thread across turns instead leaked turn 1's evidence into turn 2's
+citation pack. Model calls go through one thin wrapper over
 the raw Anthropic SDK, **not** `ChatAnthropic` and **not** `create_react_agent`:
 we need adaptive thinking, per-call `effort`, explicit `cache_control`
 breakpoints and clean `usage` accounting, and `create_react_agent` would hide
@@ -242,9 +247,9 @@ whenever a predicate would do.
 `read_document` never returns a whole file — one document here is 85 pages. It
 takes a query and returns page-attributed passages, or an explicit page range.
 
-### Two bugs worth calling out
+### Three bugs worth calling out
 
-Both were found by running the thing, and both would have shipped silently.
+All three were found by running the thing, and all three would have shipped silently.
 
 **The validator was punishing correct answers.** The LLM validator judged
 groundedness against a truncated evidence pack, so it marked well-cited claims
@@ -255,6 +260,15 @@ appear in retrieved evidence?) drives the retry and is safe to show a user; the
 model's opinion only moves the confidence label. On "when is the next court
 hearing?" that took the answer from 56.7s / $0.51 / 2 attempts with five bogus
 caveats, to 4.5s / $0.015 / clean.
+
+**A dropped judge call was being averaged as a score of zero.** The API ran
+out of credits partway through a judging pass; `structured()` returned `None`,
+`judge_answer` filled the gaps with zeros, and the composite read 2.48/5 — a
+number that described the billing account, not the agent. Now either half
+missing marks the whole judgement unavailable, the report prints judge
+coverage and a "judging gaps" section, and `--judge-only` re-grades a saved
+run without paying for the agent phase again. This is the same
+unscoreable-is-not-zero mistake that had already bitten the citation metrics.
 
 **Haiku 4.5 rejects `adaptive thinking` and `effort` with a 400**, and a broad
 `except` in the enrichment path swallowed it — the first ingest produced an
@@ -302,8 +316,32 @@ things stop it rubber-stamping:
    does not support its claim. The report prints how many the judge caught.
 4. Judge failures are recorded as gaps, never as passes.
 
-Results: [`evals/results/agent.md`](evals/results/agent.md) and
-[`evals/results/retrieval.md`](evals/results/retrieval.md), both committed.
+### What it scores
+
+| metric | value |
+|---|---|
+| Deterministic pass rate | **24/24** |
+| Verdict class correct | **24/24** |
+| Abstention & safety | **5/5** |
+| Citation recall / precision | 79% / 33% |
+| Retrieval recall (as surfaced by the agent) | 84% |
+| Judge — correctness / completeness / groundedness | 4.58 / 4.88 / 3.62 |
+| **Judge composite** | **4.26 / 5** |
+| **Judge accuracy on poisoned controls** | **4/4** |
+| Latency p50 / p95 | 16.6s / 31.8s |
+| Cost per question | $0.105 (cache hit 73%) |
+| Tool calls per question · duplicates | 2.4 · 0 |
+
+Groundedness (3.62) is the weakest number and the honest one: the judge is
+strict about any claim it cannot trace to a supplied excerpt, and the
+evidence pack it sees is a truncation of what the agent had. Two rounds of
+chasing it found real bugs rather than a judge problem — most recently that
+event excerpts were dropping `facts`, which is precisely where the payload
+lives for the event types whose body is generic.
+
+Full output: [`evals/results/agent.md`](evals/results/agent.md) and
+[`evals/results/retrieval.md`](evals/results/retrieval.md), both committed,
+with per-question traces under `evals/results/traces/`.
 
 ---
 

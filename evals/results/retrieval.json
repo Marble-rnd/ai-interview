@@ -1,0 +1,966 @@
+{
+ "summary": {
+  "bm25": {
+   "items": 10,
+   "recall@10": 0.69,
+   "precision@10": 0.1811,
+   "mrr": 0.6533,
+   "perfect_recall": 5,
+   "total_miss": 1,
+   "p50_latency_ms": 1.7
+  },
+  "bm25_contextual": {
+   "items": 10,
+   "recall@10": 0.62,
+   "precision@10": 0.1633,
+   "mrr": 0.575,
+   "perfect_recall": 4,
+   "total_miss": 1,
+   "p50_latency_ms": 1.1
+  },
+  "dense": {
+   "items": 10,
+   "recall@10": 0.6067,
+   "precision@10": 0.2167,
+   "mrr": 0.625,
+   "perfect_recall": 4,
+   "total_miss": 2,
+   "p50_latency_ms": 24.3
+  },
+  "hybrid_raw": {
+   "items": 10,
+   "recall@10": 0.64,
+   "precision@10": 0.17,
+   "mrr": 0.6393,
+   "perfect_recall": 4,
+   "total_miss": 1,
+   "p50_latency_ms": 17.3
+  },
+  "hybrid": {
+   "items": 10,
+   "recall@10": 0.64,
+   "precision@10": 0.2211,
+   "mrr": 0.7033,
+   "perfect_recall": 4,
+   "total_miss": 1,
+   "p50_latency_ms": 14.9
+  },
+  "hybrid_rerank": {
+   "items": 10,
+   "recall@10": 0.81,
+   "precision@10": 0.3863,
+   "mrr": 0.8583,
+   "perfect_recall": 5,
+   "total_miss": 0,
+   "p50_latency_ms": 2467.8
+  }
+ },
+ "per_item": {
+  "bm25": [
+   {
+    "id": "c1_factual_petition_filed",
+    "case": "case_001",
+    "category": "factual",
+    "query": "when was the petition filed with the court",
+    "recall": 0.4,
+    "precision": 0.2,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [
+     "E124",
+     "E125",
+     "issued_summons_sorlie.pdf"
+    ],
+    "latency_ms": 15.4
+   },
+   {
+    "id": "c1_factual_court_county",
+    "case": "case_001",
+    "category": "factual",
+    "query": "circuit court judicial circuit county where the case is filed",
+    "recall": 1.0,
+    "precision": 0.2,
+    "mrr": 0.2,
+    "first_hit_rank": 5,
+    "missed": [],
+    "latency_ms": 0.7
+   },
+   {
+    "id": "c1_factual_case_number",
+    "case": "case_001",
+    "category": "factual",
+    "query": "case number caption on the summons",
+    "recall": 1.0,
+    "precision": 0.2,
+    "mrr": 0.5,
+    "first_hit_rank": 2,
+    "missed": [],
+    "latency_ms": 1.4
+   },
+   {
+    "id": "c1_comm_fee_response",
+    "case": "case_001",
+    "category": "communication",
+    "query": "filing fee payment request client response",
+    "recall": 0.6666666666666666,
+    "precision": 0.2,
+    "mrr": 0.3333333333333333,
+    "first_hit_rank": 3,
+    "missed": [
+     "E213"
+    ],
+    "latency_ms": 1.2
+   },
+   {
+    "id": "c1_doc_service_address",
+    "case": "case_001",
+    "category": "document",
+    "query": "address where the opposing party was served process server",
+    "recall": 0.3333333333333333,
+    "precision": 0.1,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [
+     "E150",
+     "E166"
+    ],
+    "latency_ms": 3.4
+   },
+   {
+    "id": "c1_data_entry_natural_language",
+    "case": "case_001",
+    "category": "document",
+    "query": "opposing party address best times to find her",
+    "recall": 0.0,
+    "precision": 0.0,
+    "mrr": 0.0,
+    "first_hit_rank": null,
+    "missed": [
+     "E105",
+     "E106",
+     "E150"
+    ],
+    "latency_ms": 1.7
+   },
+   {
+    "id": "c2_factual_payment",
+    "case": "case_002",
+    "category": "factual",
+    "query": "client payment amount received",
+    "recall": 1.0,
+    "precision": 0.1111111111111111,
+    "mrr": 0.5,
+    "first_hit_rank": 2,
+    "missed": [],
+    "latency_ms": 38.0
+   },
+   {
+    "id": "c2_comm_frustration",
+    "case": "case_002",
+    "category": "communication",
+    "query": "client frustrated complaint unresolved request",
+    "recall": 0.5,
+    "precision": 0.2,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [
+     "E181",
+     "E187"
+    ],
+    "latency_ms": 2.1
+   },
+   {
+    "id": "c2_deep_document_tax",
+    "case": "case_002",
+    "category": "retrieval",
+    "query": "Schedule 2 total other taxes",
+    "recall": 1.0,
+    "precision": 0.5,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 1.2
+   },
+   {
+    "id": "c2_paraphrase_disclosure_forms",
+    "case": "case_002",
+    "category": "retrieval",
+    "query": "preliminary declaration of disclosure",
+    "recall": 1.0,
+    "precision": 0.1,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 2.1
+   }
+  ],
+  "bm25_contextual": [
+   {
+    "id": "c1_factual_petition_filed",
+    "case": "case_001",
+    "category": "factual",
+    "query": "when was the petition filed with the court",
+    "recall": 0.2,
+    "precision": 0.1,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [
+     "E124",
+     "E125",
+     "E147",
+     "issued_summons_sorlie.pdf"
+    ],
+    "latency_ms": 17.1
+   },
+   {
+    "id": "c1_factual_court_county",
+    "case": "case_001",
+    "category": "factual",
+    "query": "circuit court judicial circuit county where the case is filed",
+    "recall": 0.5,
+    "precision": 0.1,
+    "mrr": 0.3333333333333333,
+    "first_hit_rank": 3,
+    "missed": [
+     "idris_sorlie_divorce_petition.docx"
+    ],
+    "latency_ms": 0.6
+   },
+   {
+    "id": "c1_factual_case_number",
+    "case": "case_001",
+    "category": "factual",
+    "query": "case number caption on the summons",
+    "recall": 1.0,
+    "precision": 0.2222222222222222,
+    "mrr": 0.25,
+    "first_hit_rank": 4,
+    "missed": [],
+    "latency_ms": 1.0
+   },
+   {
+    "id": "c1_comm_fee_response",
+    "case": "case_001",
+    "category": "communication",
+    "query": "filing fee payment request client response",
+    "recall": 0.6666666666666666,
+    "precision": 0.2,
+    "mrr": 0.3333333333333333,
+    "first_hit_rank": 3,
+    "missed": [
+     "E213"
+    ],
+    "latency_ms": 1.1
+   },
+   {
+    "id": "c1_doc_service_address",
+    "case": "case_001",
+    "category": "document",
+    "query": "address where the opposing party was served process server",
+    "recall": 0.3333333333333333,
+    "precision": 0.1,
+    "mrr": 0.3333333333333333,
+    "first_hit_rank": 3,
+    "missed": [
+     "E150",
+     "E166"
+    ],
+    "latency_ms": 2.6
+   },
+   {
+    "id": "c1_data_entry_natural_language",
+    "case": "case_001",
+    "category": "document",
+    "query": "opposing party address best times to find her",
+    "recall": 0.0,
+    "precision": 0.0,
+    "mrr": 0.0,
+    "first_hit_rank": null,
+    "missed": [
+     "E105",
+     "E106",
+     "E150"
+    ],
+    "latency_ms": 1.4
+   },
+   {
+    "id": "c2_factual_payment",
+    "case": "case_002",
+    "category": "factual",
+    "query": "client payment amount received",
+    "recall": 1.0,
+    "precision": 0.1111111111111111,
+    "mrr": 0.5,
+    "first_hit_rank": 2,
+    "missed": [],
+    "latency_ms": 29.5
+   },
+   {
+    "id": "c2_comm_frustration",
+    "case": "case_002",
+    "category": "communication",
+    "query": "client frustrated complaint unresolved request",
+    "recall": 0.5,
+    "precision": 0.2,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [
+     "E181",
+     "E187"
+    ],
+    "latency_ms": 1.1
+   },
+   {
+    "id": "c2_deep_document_tax",
+    "case": "case_002",
+    "category": "retrieval",
+    "query": "Schedule 2 total other taxes",
+    "recall": 1.0,
+    "precision": 0.5,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 1.0
+   },
+   {
+    "id": "c2_paraphrase_disclosure_forms",
+    "case": "case_002",
+    "category": "retrieval",
+    "query": "preliminary declaration of disclosure",
+    "recall": 1.0,
+    "precision": 0.1,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 1.6
+   }
+  ],
+  "dense": [
+   {
+    "id": "c1_factual_petition_filed",
+    "case": "case_001",
+    "category": "factual",
+    "query": "when was the petition filed with the court",
+    "recall": 0.4,
+    "precision": 0.2,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [
+     "E124",
+     "E125",
+     "E147"
+    ],
+    "latency_ms": 211.4
+   },
+   {
+    "id": "c1_factual_court_county",
+    "case": "case_001",
+    "category": "factual",
+    "query": "circuit court judicial circuit county where the case is filed",
+    "recall": 0.5,
+    "precision": 0.1,
+    "mrr": 0.25,
+    "first_hit_rank": 4,
+    "missed": [
+     "idris_sorlie_divorce_petition.docx"
+    ],
+    "latency_ms": 16.0
+   },
+   {
+    "id": "c1_factual_case_number",
+    "case": "case_001",
+    "category": "factual",
+    "query": "case number caption on the summons",
+    "recall": 1.0,
+    "precision": 0.2,
+    "mrr": 0.5,
+    "first_hit_rank": 2,
+    "missed": [],
+    "latency_ms": 23.7
+   },
+   {
+    "id": "c1_comm_fee_response",
+    "case": "case_001",
+    "category": "communication",
+    "query": "filing fee payment request client response",
+    "recall": 0.6666666666666666,
+    "precision": 0.2,
+    "mrr": 0.5,
+    "first_hit_rank": 2,
+    "missed": [
+     "E213"
+    ],
+    "latency_ms": 19.1
+   },
+   {
+    "id": "c1_doc_service_address",
+    "case": "case_001",
+    "category": "document",
+    "query": "address where the opposing party was served process server",
+    "recall": 0.0,
+    "precision": 0.0,
+    "mrr": 0.0,
+    "first_hit_rank": null,
+    "missed": [
+     "E150",
+     "E166",
+     "return_of_service_affidavit.pdf"
+    ],
+    "latency_ms": 28.8
+   },
+   {
+    "id": "c1_data_entry_natural_language",
+    "case": "case_001",
+    "category": "document",
+    "query": "opposing party address best times to find her",
+    "recall": 0.0,
+    "precision": 0.0,
+    "mrr": 0.0,
+    "first_hit_rank": null,
+    "missed": [
+     "E105",
+     "E106",
+     "E150"
+    ],
+    "latency_ms": 24.5
+   },
+   {
+    "id": "c2_factual_payment",
+    "case": "case_002",
+    "category": "factual",
+    "query": "client payment amount received",
+    "recall": 1.0,
+    "precision": 0.1,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 13.4
+   },
+   {
+    "id": "c2_comm_frustration",
+    "case": "case_002",
+    "category": "communication",
+    "query": "client frustrated complaint unresolved request",
+    "recall": 0.5,
+    "precision": 0.2,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [
+     "E181",
+     "E187"
+    ],
+    "latency_ms": 24.6
+   },
+   {
+    "id": "c2_deep_document_tax",
+    "case": "case_002",
+    "category": "retrieval",
+    "query": "Schedule 2 total other taxes",
+    "recall": 1.0,
+    "precision": 1.0,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 24.4
+   },
+   {
+    "id": "c2_paraphrase_disclosure_forms",
+    "case": "case_002",
+    "category": "retrieval",
+    "query": "preliminary declaration of disclosure",
+    "recall": 1.0,
+    "precision": 0.16666666666666666,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 24.3
+   }
+  ],
+  "hybrid_raw": [
+   {
+    "id": "c1_factual_petition_filed",
+    "case": "case_001",
+    "category": "factual",
+    "query": "when was the petition filed with the court",
+    "recall": 0.4,
+    "precision": 0.2,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [
+     "E124",
+     "E125",
+     "E147"
+    ],
+    "latency_ms": 14.7
+   },
+   {
+    "id": "c1_factual_court_county",
+    "case": "case_001",
+    "category": "factual",
+    "query": "circuit court judicial circuit county where the case is filed",
+    "recall": 0.5,
+    "precision": 0.1,
+    "mrr": 0.25,
+    "first_hit_rank": 4,
+    "missed": [
+     "idris_sorlie_divorce_petition.docx"
+    ],
+    "latency_ms": 14.7
+   },
+   {
+    "id": "c1_factual_case_number",
+    "case": "case_001",
+    "category": "factual",
+    "query": "case number caption on the summons",
+    "recall": 1.0,
+    "precision": 0.2,
+    "mrr": 0.5,
+    "first_hit_rank": 2,
+    "missed": [],
+    "latency_ms": 17.3
+   },
+   {
+    "id": "c1_comm_fee_response",
+    "case": "case_001",
+    "category": "communication",
+    "query": "filing fee payment request client response",
+    "recall": 0.6666666666666666,
+    "precision": 0.2,
+    "mrr": 0.5,
+    "first_hit_rank": 2,
+    "missed": [
+     "E213"
+    ],
+    "latency_ms": 15.5
+   },
+   {
+    "id": "c1_doc_service_address",
+    "case": "case_001",
+    "category": "document",
+    "query": "address where the opposing party was served process server",
+    "recall": 0.3333333333333333,
+    "precision": 0.1,
+    "mrr": 0.14285714285714285,
+    "first_hit_rank": 7,
+    "missed": [
+     "E150",
+     "E166"
+    ],
+    "latency_ms": 20.8
+   },
+   {
+    "id": "c1_data_entry_natural_language",
+    "case": "case_001",
+    "category": "document",
+    "query": "opposing party address best times to find her",
+    "recall": 0.0,
+    "precision": 0.0,
+    "mrr": 0.0,
+    "first_hit_rank": null,
+    "missed": [
+     "E105",
+     "E106",
+     "E150"
+    ],
+    "latency_ms": 19.0
+   },
+   {
+    "id": "c2_factual_payment",
+    "case": "case_002",
+    "category": "factual",
+    "query": "client payment amount received",
+    "recall": 1.0,
+    "precision": 0.1,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 13.3
+   },
+   {
+    "id": "c2_comm_frustration",
+    "case": "case_002",
+    "category": "communication",
+    "query": "client frustrated complaint unresolved request",
+    "recall": 0.5,
+    "precision": 0.2,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [
+     "E181",
+     "E187"
+    ],
+    "latency_ms": 17.8
+   },
+   {
+    "id": "c2_deep_document_tax",
+    "case": "case_002",
+    "category": "retrieval",
+    "query": "Schedule 2 total other taxes",
+    "recall": 1.0,
+    "precision": 0.5,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 19.0
+   },
+   {
+    "id": "c2_paraphrase_disclosure_forms",
+    "case": "case_002",
+    "category": "retrieval",
+    "query": "preliminary declaration of disclosure",
+    "recall": 1.0,
+    "precision": 0.1,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 18.0
+   }
+  ],
+  "hybrid": [
+   {
+    "id": "c1_factual_petition_filed",
+    "case": "case_001",
+    "category": "factual",
+    "query": "when was the petition filed with the court",
+    "recall": 0.4,
+    "precision": 0.2,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [
+     "E124",
+     "E125",
+     "E147"
+    ],
+    "latency_ms": 14.8
+   },
+   {
+    "id": "c1_factual_court_county",
+    "case": "case_001",
+    "category": "factual",
+    "query": "circuit court judicial circuit county where the case is filed",
+    "recall": 0.5,
+    "precision": 0.1,
+    "mrr": 0.3333333333333333,
+    "first_hit_rank": 3,
+    "missed": [
+     "idris_sorlie_divorce_petition.docx"
+    ],
+    "latency_ms": 13.6
+   },
+   {
+    "id": "c1_factual_case_number",
+    "case": "case_001",
+    "category": "factual",
+    "query": "case number caption on the summons",
+    "recall": 1.0,
+    "precision": 0.2,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 14.9
+   },
+   {
+    "id": "c1_comm_fee_response",
+    "case": "case_001",
+    "category": "communication",
+    "query": "filing fee payment request client response",
+    "recall": 0.6666666666666666,
+    "precision": 0.2,
+    "mrr": 0.5,
+    "first_hit_rank": 2,
+    "missed": [
+     "E213"
+    ],
+    "latency_ms": 13.2
+   },
+   {
+    "id": "c1_doc_service_address",
+    "case": "case_001",
+    "category": "document",
+    "query": "address where the opposing party was served process server",
+    "recall": 0.3333333333333333,
+    "precision": 0.1,
+    "mrr": 0.2,
+    "first_hit_rank": 5,
+    "missed": [
+     "E150",
+     "E166"
+    ],
+    "latency_ms": 18.4
+   },
+   {
+    "id": "c1_data_entry_natural_language",
+    "case": "case_001",
+    "category": "document",
+    "query": "opposing party address best times to find her",
+    "recall": 0.0,
+    "precision": 0.0,
+    "mrr": 0.0,
+    "first_hit_rank": null,
+    "missed": [
+     "E105",
+     "E106",
+     "E150"
+    ],
+    "latency_ms": 16.3
+   },
+   {
+    "id": "c2_factual_payment",
+    "case": "case_002",
+    "category": "factual",
+    "query": "client payment amount received",
+    "recall": 1.0,
+    "precision": 0.1,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 13.3
+   },
+   {
+    "id": "c2_comm_frustration",
+    "case": "case_002",
+    "category": "communication",
+    "query": "client frustrated complaint unresolved request",
+    "recall": 0.5,
+    "precision": 0.2,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [
+     "E181",
+     "E187"
+    ],
+    "latency_ms": 15.1
+   },
+   {
+    "id": "c2_deep_document_tax",
+    "case": "case_002",
+    "category": "retrieval",
+    "query": "Schedule 2 total other taxes",
+    "recall": 1.0,
+    "precision": 1.0,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 16.2
+   },
+   {
+    "id": "c2_paraphrase_disclosure_forms",
+    "case": "case_002",
+    "category": "retrieval",
+    "query": "preliminary declaration of disclosure",
+    "recall": 1.0,
+    "precision": 0.1111111111111111,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 15.8
+   }
+  ],
+  "hybrid_rerank": [
+   {
+    "id": "c1_factual_petition_filed",
+    "case": "case_001",
+    "category": "factual",
+    "query": "when was the petition filed with the court",
+    "recall": 0.6,
+    "precision": 0.375,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [
+     "E124",
+     "E125"
+    ],
+    "latency_ms": 3333.7
+   },
+   {
+    "id": "c1_factual_court_county",
+    "case": "case_001",
+    "category": "factual",
+    "query": "circuit court judicial circuit county where the case is filed",
+    "recall": 1.0,
+    "precision": 0.25,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 2520.0
+   },
+   {
+    "id": "c1_factual_case_number",
+    "case": "case_001",
+    "category": "factual",
+    "query": "case number caption on the summons",
+    "recall": 1.0,
+    "precision": 0.25,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 2504.3
+   },
+   {
+    "id": "c1_comm_fee_response",
+    "case": "case_001",
+    "category": "communication",
+    "query": "filing fee payment request client response",
+    "recall": 0.6666666666666666,
+    "precision": 0.25,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [
+     "E213"
+    ],
+    "latency_ms": 2464.6
+   },
+   {
+    "id": "c1_doc_service_address",
+    "case": "case_001",
+    "category": "document",
+    "query": "address where the opposing party was served process server",
+    "recall": 0.6666666666666666,
+    "precision": 0.2857142857142857,
+    "mrr": 0.25,
+    "first_hit_rank": 4,
+    "missed": [
+     "E150"
+    ],
+    "latency_ms": 2225.9
+   },
+   {
+    "id": "c1_data_entry_natural_language",
+    "case": "case_001",
+    "category": "document",
+    "query": "opposing party address best times to find her",
+    "recall": 0.6666666666666666,
+    "precision": 0.2857142857142857,
+    "mrr": 0.3333333333333333,
+    "first_hit_rank": 3,
+    "missed": [
+     "E150"
+    ],
+    "latency_ms": 2470.7
+   },
+   {
+    "id": "c2_factual_payment",
+    "case": "case_002",
+    "category": "factual",
+    "query": "client payment amount received",
+    "recall": 1.0,
+    "precision": 0.5,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 2360.7
+   },
+   {
+    "id": "c2_comm_frustration",
+    "case": "case_002",
+    "category": "communication",
+    "query": "client frustrated complaint unresolved request",
+    "recall": 0.5,
+    "precision": 0.3333333333333333,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [
+     "E181",
+     "E187"
+    ],
+    "latency_ms": 2421.1
+   },
+   {
+    "id": "c2_deep_document_tax",
+    "case": "case_002",
+    "category": "retrieval",
+    "query": "Schedule 2 total other taxes",
+    "recall": 1.0,
+    "precision": 1.0,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 2467.8
+   },
+   {
+    "id": "c2_paraphrase_disclosure_forms",
+    "case": "case_002",
+    "category": "retrieval",
+    "query": "preliminary declaration of disclosure",
+    "recall": 1.0,
+    "precision": 0.3333333333333333,
+    "mrr": 1.0,
+    "first_hit_rank": 1,
+    "missed": [],
+    "latency_ms": 2497.4
+   }
+  ]
+ },
+ "excluded": [
+  {
+   "id": "c1_status_overall",
+   "mechanism": "brief"
+  },
+  {
+   "id": "c1_comm_last_client_contact",
+   "mechanism": "filter"
+  },
+  {
+   "id": "c1_doc_uploaded",
+   "mechanism": "filter"
+  },
+  {
+   "id": "c1_synthesis_two_weeks",
+   "mechanism": "filter"
+  },
+  {
+   "id": "c1_negative_hearing",
+   "mechanism": "brief"
+  },
+  {
+   "id": "c1_safety_ssn",
+   "mechanism": "none"
+  },
+  {
+   "id": "c2_factual_kickoff_call",
+   "mechanism": "brief"
+  },
+  {
+   "id": "c2_status_overall",
+   "mechanism": "brief"
+  },
+  {
+   "id": "c2_comm_last_human",
+   "mechanism": "filter"
+  },
+  {
+   "id": "c2_doc_disclosures",
+   "mechanism": "filter"
+  },
+  {
+   "id": "c2_doc_forms_drafted",
+   "mechanism": "filter"
+  },
+  {
+   "id": "c2_doc_absent_paystubs",
+   "mechanism": "filter"
+  },
+  {
+   "id": "c2_negative_attorney_call",
+   "mechanism": "brief"
+  },
+  {
+   "id": "xc_prompt_injection",
+   "mechanism": "filter"
+  }
+ ],
+ "usage": {
+  "calls": 10,
+  "input_tokens": 121533,
+  "output_tokens": 274,
+  "cache_read_tokens": 0,
+  "cache_write_tokens": 0,
+  "cache_hit_rate": 0.0,
+  "latency_ms": 25115.8,
+  "cost_usd": 0.614515,
+  "by_model": {
+   "claude-opus-5": 10
+  }
+ },
+ "k": 10
+}

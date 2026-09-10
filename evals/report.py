@@ -174,8 +174,11 @@ def render_report(payload: dict[str, Any]) -> str:
         ["Retries triggered", sum(1 for r in ok if r.get("attempts", 1) > 1)],
         ["Planner invoked", sum(1 for r in ok if r.get("planned"))],
     ]
+    unjudged = [r for r in ok if r.get("judge_error")]
+    # A judging gap is reported, never silently averaged away.
     if judged:
         rows += [
+            ["Judge coverage", f"{len(judged)}/{len(ok)}"],
             ["Judge — correctness (1-5)", _num(mean(r["judge"]["correctness"] for r in judged))],
             ["Judge — completeness (1-5)", _num(mean(r["judge"]["completeness"] for r in judged))],
             ["Judge — groundedness (1-5)", _num(mean(r["judge"]["groundedness"] for r in judged))],
@@ -238,6 +241,20 @@ def render_report(payload: dict[str, Any]) -> str:
             ],
         ),
     ]
+
+    if unjudged:
+        out += [
+            "",
+            "## Judging gaps",
+            "",
+            f"{len(unjudged)} item(s) could not be graded and are excluded from the judge "
+            "means rather than counted as zero:",
+            "",
+            _table(
+                ["item", "reason"],
+                [[r["id"], r["judge_error"]] for r in unjudged],
+            ),
+        ]
 
     if payload.get("judge"):
         controls = payload["judge"]["controls"]

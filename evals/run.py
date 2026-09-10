@@ -284,6 +284,10 @@ def judge_results(results: list[dict[str, Any]], workers: int = 4) -> dict[str, 
             # the deterministic tier already stands on its own.
             result["judge_error"] = f"{type(exc).__name__}: {exc}"
             return
+        if not judgement.ok:
+            result["judge_error"] = judgement.reason
+            result.pop("judge", None)
+            return
         result["judge"] = judgement.to_dict()
 
     with ThreadPoolExecutor(max_workers=workers) as pool:
@@ -303,6 +307,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--retrieval-only", action="store_true", help="Retriever ablation only.")
     parser.add_argument("--tier1", action="store_true", help="Agent + deterministic metrics.")
     parser.add_argument("--all", action="store_true", help="Tier 1 plus the LLM judge.")
+    parser.add_argument(
+        "--judge-only",
+        action="store_true",
+        help="Re-grade the saved run in evals/results/agent.json without re-running "
+        "the agent. Use when judging failed but the agent phase is sound.",
+    )
     parser.add_argument("--case", help="Restrict to one case slug.")
     parser.add_argument("--id", action="append", dest="ids", help="Run specific item ids.")
     parser.add_argument("--no-rerank", action="store_true", help="Disable the Claude reranker.")
@@ -316,8 +326,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", type=Path, default=RESULTS)
     args = parser.parse_args(argv)
 
-    if not (args.retrieval_only or args.tier1 or args.all):
-        parser.error("choose one of --retrieval-only, --tier1, --all")
+    if not (args.retrieval_only or args.tier1 or args.all or args.judge_only):
+        parser.error("choose one of --retrieval-only, --tier1, --all, --judge-only")
 
     items = load_dataset()
     if args.case:
@@ -339,10 +349,17 @@ def main(argv: list[str] | None = None) -> int:
         print(text)
         return 0
 
-    results = evaluate_agent(items, rerank_enabled=not args.no_rerank, workers=args.workers)
-    judge_block: dict[str, Any] | None = None
-    if args.all:
+    if args.judge_only:
+        saved = json.loads((args.out / "agent.json").read_text(encoding="utf-8"))
+        selected = {i["id"] for i in items}
+        results = [r for r in saved["results"] if r["id"] in selected]
+        for result in results:
+            result.pop("judge", None)
+            result.pop("judge_error", None)
         judge_block = judge_results(results, workers=args.workers)
+    else:
+        results = evaluate_agent(items, rerank_enabled=not args.no_rerank, workers=args.workers)
+        judge_block = judge_results(results, workers=args.workers) if args.all else None
 
     payload = {
         "run_at": stamp,
