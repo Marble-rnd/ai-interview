@@ -1,0 +1,13 @@
+[project]
+name = "case-research-agent"
+version = "0.1.0"
+description = "AI Engineer Interview Exercise — Case Research Agent"
+requires-python = ">=3.11"
+dependencies = [
+    "openai>=1.60",
+    "anthropic>=0.40",
+    "pydantic>=2.0",
+]
+
+[tool.uv]
+dev-dependencies = []
