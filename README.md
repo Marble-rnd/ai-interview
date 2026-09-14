@@ -1,3 +1,17 @@
+> **Submission note.** The implementation and its write-up are in
+> **[SOLUTION.md](SOLUTION.md)**. Pre-generated output, so nothing has to be run
+> to review it: [`demo/transcript.md`](demo/transcript.md),
+> [`evals/results/agent.md`](evals/results/agent.md),
+> [`evals/results/retrieval.md`](evals/results/retrieval.md).
+>
+> Two notes on the brief below: `src/tools.py` was replaced by
+> `src/agent/tools.py` (its schemas were OpenAI-format; this runs on Anthropic),
+> and the provided `.env` contains an Anthropic key only — no OpenAI key — so
+> everything here uses Claude, with one small local embedding model for the
+> dense retrieval signal that no LLM can produce.
+
+---
+
 # Case Research Agent — AI Engineer Exercise
 
 ## Context
